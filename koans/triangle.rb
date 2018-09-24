@@ -16,17 +16,17 @@
 def triangle(a, b, c)
   # WRITE THIS CODE
   sides = [a, b, c]
-  if a == b && b == c
-    return :equilateral
-  end
+  
+  return check_valid_triangle(sides)
+end
 
-  if sides.uniq.length == 2
-    return :isosceles
-  end
+def check_valid_triangle(array_of_sides)
 
-  if sides.uniq.length == 3
-    return :scalene
-  end
+  raise TriangleError if array_of_sides.min <= 0
+  x, y, z = array_of_sides.sort
+
+  raise TriangleError if x + y <= z
+  return [:equilateral, :isosceles, :scalene][array_of_sides.uniq.size - 1]
 end
 
 # Error class used in part 2.  No need to change this code.
