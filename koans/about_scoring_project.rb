@@ -31,6 +31,32 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 
 def score(dice)
   # You need to write this method
+
+  score = 0
+  return score if dice.empty?
+
+  #no 5, no 1, no set
+  grouped = dice.group_by { |v| v }
+  return 0 if !grouped.keys.include?(1) && !grouped.keys.include?(5) && grouped.keys.size == dice.size
+
+  #handle 5
+  grouped.each { |k, v|
+    if k == 5 
+      score += (100 * 5) if v.size - 3 >= 0
+      score += (50 * (v.size % 3))
+    end
+  }
+ 
+  #set of any 3 numbers 
+  set_of_3 = grouped.select { |k, v| ![1,5].include?(k) && v.size >= 3}
+  set_of_3_value = set_of_3.keys[0]
+  score += (set_of_3_value == nil ? 0 : set_of_3_value * 100)
+
+  #set of 3 ones plus any one
+  ones = dice.select { |v| v == 1 }
+  score += 1000 if ones.size >= 3
+  score += (100 * (ones.size % 3))
+   
 end
 
 class AboutScoringProject < Neo::Koan
