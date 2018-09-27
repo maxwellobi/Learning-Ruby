@@ -12,7 +12,7 @@ class DiceSet
     
     random = Random.new
     roll_times.times {
-      @random_integers.push(random.rand(6))
+      @random_integers.push(random.rand(1..6))
     }
 
     #p random_integers
